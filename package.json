@@ -1,5 +1,20 @@
 {
   "dependencies": {
     "regexp-tree": "^0.1.24"
+  },
+  "scripts": {
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "success-message": "echo Thanks for contributing $GIT_AUTHOR_NAME",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.0",
+    "prettier": "^2.3.2"
   }
 }
