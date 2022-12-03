@@ -4,7 +4,7 @@ const {performance} = require('perf_hooks');
 
 // Below is a reference example of a loop-in-loop vulnerability
 // and the corresponding match string and attack string
-const regexpTree = require('./src/regexp-tree');
+const regexpTree = require('regexp-tree');
 let test_regex = regexpTree.toRegExp(/^((b\D)*ba([a-z]a)*)*$/);
 let ts_1 = 'bababababababababababababababababababababa';
 let ts_2 = 'bababababababababababababababababababababab';
@@ -80,11 +80,7 @@ class SubExprSequence {
   runMatch() {
     let missed_matches = 0;
     let start = true;
-    for (
-      let i = 0;
-      missed_matches < this.items.length;
-      i = Math.abs((i + 1) % this.items.length)
-    ) {
+    for (let i = 0; missed_matches < this.items.length; i = Math.abs((i + 1) % this.items.length)) {
       missed_matches = this.items[i].runMatch(start) ? 0 : missed_matches + 1;
       start = false;
     }
@@ -96,7 +92,7 @@ class SubExprSequence {
 
     for (let i = this.items.length - 1; i >= 0; i--) {
       for (let j = 0; j < this.items[i].matchpoints.length; j++) {
-        if (this.items[i].matchpoints[j][1] == this.text.length) {
+        if (this.items[i].matchpoints[j][1] === this.text.length) {
           return true;
         }
       }
@@ -148,27 +144,14 @@ class SubExpr {
       return retval;
     }
 
-    let i =
-      this.index == 0
-        ? this.sequence.length - 1
-        : Math.abs((this.index - 1) % this.sequence.length);
-    for (
-      ;
-      i != this.index;
-      i =
-        i == 0
-          ? this.sequence.length - 1
-          : Math.abs((i - 1) % this.sequence.length)
-    ) {
+    let i = this.index === 0 ? this.sequence.length - 1 : Math.abs((this.index - 1) % this.sequence.length);
+    for (; i !== this.index; i = i === 0 ? this.sequence.length - 1 : Math.abs((i - 1) % this.sequence.length)) {
       // Find the earliest SubExpr that count min greater than 0
       let previous = this.sequence.get(i);
 
       // Can appear after this subexpression. However, may not.
       for (let j = 0; j < previous.matchpoints.length; j++) {
-        if (
-          this.matchpoints.length == 0 ||
-          !start_positions.includes(previous.matchpoints[j][1])
-        ) {
+        if (this.matchpoints.length === 0 || !start_positions.includes(previous.matchpoints[j][1])) {
           retval.add(previous.matchpoints[j][1]); // Start at the end of the previous match
         }
       }
@@ -179,7 +162,7 @@ class SubExpr {
       }
     }
 
-    if (i == this.index) {
+    if (i === this.index) {
       // Must also add our matchpoints
       for (let j = 0; j < this.matchpoints.length; j++) {
         if (!start_positions.includes(this.matchpoints[j][1])) {
@@ -187,7 +170,7 @@ class SubExpr {
         }
       }
 
-      if (this.matchpoints.length == 0) {
+      if (this.matchpoints.length === 0) {
         retval.add(0);
       }
     }
@@ -214,7 +197,7 @@ class SubExpr {
       // console.log(this.index, " found earliest ", start_index);
     }
 
-    if (start_index.size == 0) {
+    if (start_index.size === 0) {
       return false;
     }
 
@@ -227,7 +210,7 @@ class SubExpr {
         let match_string = this.sequence.getText().slice(st);
         let match_res = this.pattern.exec(match_string);
 
-        if (match_res == null || match_res['index'] != 0) {
+        if (match_res == null || match_res['index'] !== 0) {
           // Must match from start of the string
           break;
         }
