@@ -15,12 +15,12 @@ const t1_start = performance.now()
 // and the fact that the pattern does not match the provided text (exponential backtracking).
 const ts_1_result = test_regex.test(ts_1)
 const t1_end = performance.now()
-console.log(`Traditional match 1: ${ts_1_result}`)
+console.log('Traditional match 1: ', ts_1_result)
 console.log(`T1 execution time: ${t1_end - t1_start} \n`)
 
 const t2_start = performance.now()
 const ts_2_result = test_regex.test(ts_2)
-console.log(`Traditional match 2: ${ts_2_result}`)
+console.log('Traditional match 2: ', ts_2_result)
 const t2_end = performance.now()
 console.log(`T2 execution time: ${t2_end - t2_start} \n`)
 
