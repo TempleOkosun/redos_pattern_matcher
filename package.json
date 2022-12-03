@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "regexp-tree": "^0.1.24"
+  }
+}
