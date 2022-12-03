@@ -1,25 +1,28 @@
+// import timer
 const {performance} = require('perf_hooks');
 
 /* Algorithm - Sketch */
 
-// Below is a reference example of a loop-in-loop vulnerability
+// below is a reference example of a loop-in-loop vulnerability
 // and the corresponding match string and attack string
 const regexpTree = require('regexp-tree');
 let test_regex = regexpTree.toRegExp(/^((b\D)*ba([a-z]a)*)*$/);
-let ts_1 = 'bababababababababababababababababababababa';
-let ts_2 = 'bababababababababababababababababababababab';
+let ts_1 = 'bababababababababababababababababababababa'; // match string
+let ts_2 = 'bababababababababababababababababababababab'; // attack string
 
 const t1_start = performance.now();
 // The first match should be quick. The second is slow due to the loop-in-loop pattern
 // and the fact that the pattern does not match the provided text (exponential backtracking).
-console.log('Traditional match 1: ', test_regex.test(ts_1));
+const ts_1_result = test_regex.test(ts_1)
 const t1_end = performance.now();
-console.log(`T1 Execution time: ${t1_end - t1_start}`);
+console.log(`Traditional match 1: ${ts_1_result}`);
+console.log(`T1 execution time: ${t1_end - t1_start} \n`);
 
 const t2_start = performance.now()
-console.log('Traditional match 2: ', test_regex.test(ts_2));
+const ts_2_result = test_regex.test(ts_2)
+console.log(`Traditional match 2: ${ts_2_result}`);
 const t2_end = performance.now()
-console.log(`T2 Execution time: ${t2_end - t2_start}`);
+console.log(`T2 execution time: ${t2_end - t2_start} \n`);
 
 // Classes to represent vulnerable patterns
 class SubExprSequence {
@@ -68,7 +71,7 @@ class SubExprSequence {
    *
    * @returns string
    */
-  getText(t) {
+  getText() {
     return this.text;
   }
 
@@ -254,7 +257,7 @@ class SubExpr {
 
 //1. Good Match
 
-console.log('Start Tests');
+console.log('Start Tests with implemented algorithm');
 
 const final1_start = performance.now()
 let group = new SubExprSequence(0, 10);
@@ -271,7 +274,7 @@ group.insert(exp3);
 let final_match = group.runMatch();
 const final1_end = performance.now()
 console.log('Final match 1: ', final_match);
-console.log(`Final1 Execution time: ${final1_end - final1_start}`);
+console.log(`Final1 execution time: ${final1_end - final1_start} \n`);
 
 // 2. Vulnerable
 const final2_start = performance.now()
@@ -289,7 +292,7 @@ group2.insert(exp3);
 final_match = group2.runMatch();
 const final2_end = performance.now()
 console.log('Final match 2: ', final_match);
-console.log(`Final2 Execution time: ${final2_end - final2_start}`);
+console.log(`Final2 execution time: ${final2_end - final2_start} \n`);
 
 // Check correctness. Should not match
 let group3 = new SubExprSequence(0, 10);
